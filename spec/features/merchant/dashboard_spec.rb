@@ -16,6 +16,7 @@ RSpec.describe 'Merchant Dashboard' do
       @order_item_2 = @order_2.order_items.create!(item: @hippo, price: @hippo.price, quantity: 2, fulfilled: true)
       @order_item_3 = @order_2.order_items.create!(item: @ogre, price: @ogre.price, quantity: 2, fulfilled: false)
       @order_item_4 = @order_3.order_items.create!(item: @giant, price: @giant.price, quantity: 2, fulfilled: false)
+      @discount_1 = @merchant_1.discounts.create!(percentage: 50, quantity: 100)
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@m_user)
     end
 
@@ -81,6 +82,12 @@ RSpec.describe 'Merchant Dashboard' do
 
     expect(page).to have_content("Discount percentage: 10.000%")
     expect(page).to have_content("Quantity needed: 5")
+    end
+
+    it "Discounts can be deleted" do
+      visit "/merchant"
+
+      expect(page).to have_link("Delete Discount")
     end
   end
 end
