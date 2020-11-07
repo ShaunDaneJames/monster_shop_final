@@ -70,5 +70,15 @@ RSpec.describe 'Merchant Dashboard' do
 
       expect(current_path).to eq("/merchant/discount/new")
     end
+
+    it "Clicking on Create Bulk Discount takes me to a form where I can
+    create the discount" do
+    visit '/merchant/discount/new'
+    
+    fill_in 'discount_percentage', with: 10
+    fill_in 'discount_quantity', with: 5
+
+    click_button "Create This Discount"
+    end
   end
 end
