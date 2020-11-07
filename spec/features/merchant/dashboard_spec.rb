@@ -77,17 +77,41 @@ RSpec.describe 'Merchant Dashboard' do
 
     fill_in 'percentage', with: 10
     fill_in 'quantity', with: 5
-
     click_button "Create This Discount"
 
-    expect(page).to have_content("Discount percentage: 10.000%")
-    expect(page).to have_content("Quantity needed: 5")
+    expect(page).to have_content("#{@discount_1.percentage}")
+    expect(page).to have_content("#{@discount_1.quantity}")
     end
 
-    it "Discounts can be deleted" do
+    xit "Discounts can be deleted" do
       visit "/merchant"
 
-      expect(page).to have_link("Delete Discount")
+      within "#discount-#{@discount_1.id}" do
+        click_link("Delete Discount")
+      end
+
+      expect(page).to_not have_content("#{@discount_1.percentage}")
+      expect(page).to_not have_content("#{@discount_1.quantity}")
+    end
+
+    it "Discounts can be updated" do
+      visit "/merchant"
+
+      within "#discount-#{@discount_1.id}" do
+        click_link "Update Discount"
+      end
+
+      updated_percent = 10
+      updated_quantity = 5
+      fill_in 'percentage', with: updated_percent
+      fill_in 'quantity', with: updated_quantity
+
+      click_button "Update This Discount"
+
+      expect(page).to have_content(updated_percent)
+      expect(page).to have_content(updated_quantity)
+      expect(page).to_not have_content(@discount_1.percentage)
+      expect(page).to_not have_content(@discount1.quantity)
     end
   end
 end
