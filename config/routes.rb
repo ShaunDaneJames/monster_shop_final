@@ -48,5 +48,6 @@ Rails.application.routes.draw do
     patch '/orders/:id/ship', to: 'orders#ship'
   end
 
-  get '/merchant/discount/new', to: 'discounts#new'
+  get '/merchant/discount/new', to: 'discounts#new', as: :discounts
+  post '/merchant/discount/new', to: 'discounts#create'
 end
