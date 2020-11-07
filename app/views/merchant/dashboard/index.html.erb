@@ -15,3 +15,14 @@
     </section>
   <% end %>
 </section>
+
+<section class="discounts">
+  <h3>Current Discounts:</h3>
+  <% @merchant.discounts.each do |discount| %>
+  Discount percentage: <%= number_to_percentage(discount.percentage) %>
+  Quantity needed: <%= discount.quantity %>
+  <%= link_to "Delete Discount", "/merchant/#{@merchant.id}/discount/destroy" %>
+  <br>
+  <br>
+  <% end %>
+</section>
