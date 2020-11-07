@@ -50,4 +50,5 @@ Rails.application.routes.draw do
 
   get '/merchant/:merchant_id/discount/new', to: 'discounts#new', as: :discounts
   post '/merchant/:merchant_id/discount/new', to: 'discounts#create'
+  get '/merchant/:merchant_id/discount/destroy', to: 'discounts#destory'
 end
