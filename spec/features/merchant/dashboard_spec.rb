@@ -71,14 +71,16 @@ RSpec.describe 'Merchant Dashboard' do
       expect(current_path).to eq("/merchant/#{@merchant_1.id}/discount/new")
     end
 
-    it "Clicking on Create Bulk Discount takes me to a form where I can
-    create the discount" do
+    it "I can create the discount" do
     visit "/merchant/#{@merchant_1.id}/discount/new"
 
     fill_in 'percentage', with: 10
     fill_in 'quantity', with: 5
 
     click_button "Create This Discount"
+
+    expect(page).to have_content("Discount percentage: 10.000%")
+    expect(page).to have_content("Quantity needed: 5")
     end
   end
 end
