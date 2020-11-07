@@ -1,5 +1,6 @@
 class DiscountsController < Merchant::BaseController
 
   def new
-  end 
+    @discount = Discount.new
+  end
 end
