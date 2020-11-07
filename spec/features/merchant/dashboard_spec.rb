@@ -67,6 +67,8 @@ RSpec.describe 'Merchant Dashboard' do
       visit '/merchant'
 
       click_link 'Create Bulk Discount'
+
+      expect(current_path).to eq("/merchant/discount/new")
     end
   end
 end
