@@ -75,8 +75,8 @@ RSpec.describe 'Merchant Dashboard' do
     create the discount" do
     visit "/merchant/#{@merchant_1.id}/discount/new"
 
-    fill_in 'discount_percentage', with: 10
-    fill_in 'discount_quantity', with: 5
+    fill_in 'percentage', with: 10
+    fill_in 'quantity', with: 5
 
     click_button "Create This Discount"
     end
