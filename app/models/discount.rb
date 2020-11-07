@@ -1,0 +1,4 @@
+class Discount < ApplicationRecord
+
+
+end
