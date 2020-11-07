@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_07_170959) do
+ActiveRecord::Schema.define(version: 2020_11_07_163004) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,8 +19,6 @@ ActiveRecord::Schema.define(version: 2020_11_07_170959) do
     t.float "percentage"
     t.integer "quantity"
     t.bigint "merchant_id"
-    t.bigint "item_id"
-    t.index ["item_id"], name: "index_discounts_on_item_id"
     t.index ["merchant_id"], name: "index_discounts_on_merchant_id"
   end
 
@@ -93,7 +91,6 @@ ActiveRecord::Schema.define(version: 2020_11_07_170959) do
     t.index ["merchant_id"], name: "index_users_on_merchant_id"
   end
 
-  add_foreign_key "discounts", "items"
   add_foreign_key "discounts", "merchants"
   add_foreign_key "items", "merchants"
   add_foreign_key "order_items", "items"
