@@ -7,6 +7,7 @@ class DiscountsController < Merchant::BaseController
   def create
     merchant = Merchant.find(params[:merchant_id])
     merchant.discounts.create(discount_params)
+    redirect_to "/merchant"
   end
 
   private
