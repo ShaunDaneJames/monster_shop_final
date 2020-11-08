@@ -10,9 +10,17 @@ class DiscountsController < Merchant::BaseController
     redirect_to "/merchant"
   end
 
-  def update
+  def edit
+    @merchant = Merchant.find(params[:merchant_id])
+    @discount = Discount.find(params[:discount_id])
   end
-  
+
+  def update
+    discount = Discount.find(params[:discount_id])
+    discount.update(discount_params)
+    redirect_to '/merchant'
+  end
+
   def destroy
     Discount.destroy(params[:discount_id])
     redirect_to "/merchant"
@@ -22,4 +30,5 @@ class DiscountsController < Merchant::BaseController
   def discount_params
     params.permit(:percentage, :quantity)
   end
+
 end
