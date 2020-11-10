@@ -47,4 +47,10 @@ Rails.application.routes.draw do
     resources :users, only: [:index, :show]
     patch '/orders/:id/ship', to: 'orders#ship'
   end
+
+  get '/merchant/:merchant_id/discount/new', to: 'discounts#new', as: :discounts
+  post '/merchant/:merchant_id/discount/new', to: 'discounts#create'
+  get '/merchant/:merchant_id/:discount_id/edit', to: 'discounts#edit'
+  get '/merchant/:merchant_id/:discount_id/destroy', to: 'discounts#destroy'
+  patch '/merchant/:merchant_id/:discount_id/update', to: 'discounts#update'
 end

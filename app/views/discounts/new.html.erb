@@ -1,0 +1,11 @@
+<h1>Create a bulk discount!</h1>
+
+<%= form_tag "/merchant/#{@merchant.id}/discount/new" do %>
+  <%= label_tag :percentage_off %>
+  <%= number_field_tag :percentage %>
+
+  <%= label_tag :quantity_needed %>
+  <%= number_field_tag :quantity %>
+
+  <%= submit_tag 'Create This Discount' %>
+<% end %>

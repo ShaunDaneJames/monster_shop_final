@@ -16,6 +16,7 @@ RSpec.describe 'Merchant Dashboard' do
       @order_item_2 = @order_2.order_items.create!(item: @hippo, price: @hippo.price, quantity: 2, fulfilled: true)
       @order_item_3 = @order_2.order_items.create!(item: @ogre, price: @ogre.price, quantity: 2, fulfilled: false)
       @order_item_4 = @order_3.order_items.create!(item: @giant, price: @giant.price, quantity: 2, fulfilled: false)
+      @discount_1 = @merchant_1.discounts.create!(percentage: 50, quantity: 100)
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@m_user)
     end
 
@@ -61,6 +62,58 @@ RSpec.describe 'Merchant Dashboard' do
       click_link @order_2.id
 
       expect(current_path).to eq("/merchant/orders/#{@order_2.id}")
+    end
+
+    it 'I see a link to create a bulk discount' do
+      visit '/merchant'
+
+      click_link 'Create Bulk Discount'
+
+      expect(current_path).to eq("/merchant/#{@merchant_1.id}/discount/new")
+    end
+
+    it "I can create the discount" do
+    visit "/merchant/#{@merchant_1.id}/discount/new"
+
+    fill_in 'percentage', with: 10
+    fill_in 'quantity', with: 5
+    click_button "Create This Discount"
+
+    expect(page).to have_content("#{@discount_1.percentage}")
+    expect(page).to have_content("#{@discount_1.quantity}")
+    end
+
+    xit "Discounts can be deleted" do
+      visit "/merchant"
+
+      within "#discount-#{@discount_1.id}" do
+        click_link("Delete Discount")
+      end
+
+      expect(page).to_not have_content("#{@discount_1.percentage}")
+      expect(page).to_not have_content("#{@discount_1.quantity}")
+    end
+
+    xit "Discounts can be updated" do
+      visit "/merchant"
+
+      within "#discount-#{@discount_1.id}" do
+        click_link "Update Discount"
+      end
+
+      updated_percent = 10
+      updated_quantity = 5
+      fill_in 'percentage', with: updated_percent
+      fill_in 'quantity', with: updated_quantity
+
+      click_button "Update This Discount"
+
+      @discount_1.reload
+
+      expect(page).to have_content(updated_percent)
+      expect(page).to have_content(updated_quantity)
+      expect(page).to_not have_content(@discount_1.percentage)
+      expect(page).to_not have_content(@discount_1.quantity)
     end
   end
 end
