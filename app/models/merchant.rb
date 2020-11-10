@@ -4,7 +4,7 @@ class Merchant < ApplicationRecord
   has_many :orders, through: :order_items
   has_many :users
   has_many :discounts
-  
+
   validates_presence_of :name,
                         :address,
                         :city,
@@ -32,5 +32,14 @@ class Merchant < ApplicationRecord
 
   def order_items_by_order(order_id)
     order_items.where(order_id: order_id)
+  end
+
+  def discount_threshold
+    discounts.pluck(:quantity).first
+    #sort by?
+  end
+
+  def apply_discount
+    # require "pry"; binding.pry
   end
 end
