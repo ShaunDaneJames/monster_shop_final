@@ -32,6 +32,9 @@ RSpec.describe Merchant do
       @order_item_2 = @order_1.order_items.create!(item: @hippo, price: @hippo.price, quantity: 3)
       @order_item_3 = @order_2.order_items.create!(item: @giant, price: @hippo.price, quantity: 2)
       @order_item_4 = @order_2.order_items.create!(item: @ogre, price: @hippo.price, quantity: 2)
+      @discount_1 = @megan.discounts.create!(percentage: 5, quantity: 2)
+      @discount_2 = @megan.discounts.create!(percentage: 10, quantity: 3)
+
     end
 
     it '.item_count' do
@@ -55,6 +58,23 @@ RSpec.describe Merchant do
 
     it '.order_items_by_order' do
       expect(@megan.order_items_by_order(@order_1.id)).to eq([@order_item_1])
+    end
+
+    it '.find_discount' do
+      expect(@megan.find_discount(@order_item_1.quantity).first.percentage).to eq(@discount_1.percentage)
+      # expect(@megan.find_discount(@order_item_1.quantity)).to eq(@discount_1)
+    end
+
+    it '.highest_discount' do
+      expect(@megan.highest_discount(@order_item_2.quantity)).to eq(@discount_2.quantity)
+    end
+
+    it '.associated_percentage' do
+      expect(@megan.associated_percentage(@order_item_2.quantity)).to eq(@discount_2.percentage)
+    end
+
+    it '.apply_discount' do
+      expect(@megan.apply_discount(@order_item_2.price, @megan.associated_percentage(@order_item_2.quantity))).to eq(45.0)
     end
   end
 end
