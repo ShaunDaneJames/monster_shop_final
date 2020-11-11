@@ -20,7 +20,7 @@
   <h3>Current Discounts:</h3>
   <% @merchant.discounts.each do |discount| %>
   <section id="discount-<%= discount.id %>">
-  Discount percentage: <%= number_to_percentage(discount.percentage) %>
+  Discount percentage: <%= number_to_percentage(discount.percentage, precision: 0) %>
   Quantity needed: <%= discount.quantity %>
   <%= link_to "Delete Discount", "/merchant/#{@merchant.id}/#{discount.id}/destroy" %>
   <%= link_to "Update Discount", "/merchant/#{@merchant.id}/#{discount.id}/edit" %>
