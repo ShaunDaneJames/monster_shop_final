@@ -177,6 +177,18 @@ RSpec.describe 'Cart Show Page' do
       @ogre = @megan.items.create!(name: 'Ogre', description: "I'm an Ogre!", price: 20, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaLM_vbg2Rh-mZ-B4t-RSU9AmSfEEq_SN9xPP_qrA2I6Ftq_D9Qw', active: true, inventory: 50 )
       @hippo = @megan.items.create!(name: 'Hippo', description: "I'm a Hippo!", price: 50, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaLM_vbg2Rh-mZ-B4t-RSU9AmSfEEq_SN9xPP_qrA2I6Ftq_D9Qw', active: true, inventory: 30 )
       @discount_1 = @megan.discounts.create!(percentage: 5, quantity: 5)
+      @discount_2 = @megan.discounts.create!(percentage: 10, quantity: 10)
+    end
+
+    it "Applies the discount" do
+      visit item_path(@ogre)
+      click_button 'Add to Cart'
+      visit '/cart'
+
+      within "#item-#{@ogre.id}" do
+        4.times {click_button('More of This!')}
+        expect(page).to have_content("$95.00")
+      end
     end
 
     it "discounts trigger when a particular item quantity meets or exceeds the discount threshold" do
@@ -189,15 +201,35 @@ RSpec.describe 'Cart Show Page' do
 
       within "#item-#{@hippo.id}" do
         3.times {click_button('More of This!')}
+        expect(page).to_not have_content(@discount_1.percentage)
       end
 
-      expect(page).to_not have_content(@discount_1.percentage)
 
       within "#item-#{@ogre.id}" do
         4.times {click_button('More of This!')}
+        expect(page).to have_content(@discount_1.percentage)
       end
 
-      expect(page).to_not have_content(@discount_1.percentage)      
+    end
+
+    it "When two discounts apply, the greater one is selected" do
+      visit item_path(@hippo)
+      click_button 'Add to Cart'
+
+      visit '/cart'
+
+      within "#item-#{@hippo.id}" do
+        4.times {click_button('More of This!')}
+      end
+
+      expect(page).to have_content(@discount_1.percentage)
+
+      within "#item-#{@hippo.id}" do
+        5.times {click_button('More of This!')}
+      end
+
+      expect(page).to_not have_content(@discount_1.percentage)
+      expect(page).to have_content(@discount_2.percentage)
     end
   end
 end
