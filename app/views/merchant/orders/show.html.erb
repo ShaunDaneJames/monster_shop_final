@@ -8,6 +8,12 @@
     <%= link_to order_item.item.name, "/merchant/items/#{order_item.item.id}" %>
     <p>Price: <%= number_to_currency(order_item.price) %></p>
     <p>Quantity: <%= order_item.quantity %></p>
+    <% if order_item.item.merchant.find_discount(order_item.quantity).empty? %>
+      <p>Subtotal: <%= number_to_currency(order_item.subtotal) %></p>
+    <% else %>
+    <p>Discounted Subtotal: <%= number_to_currency(current_user.merchant.apply_discount(order_item.subtotal, current_user.merchant.associated_percentage(order_item.quantity)))%></p>
+    <% end %>
+
     <% if order_item.fulfilled? %>
       <p>Fulfilled</p>
     <% elsif order_item.fulfillable? %>

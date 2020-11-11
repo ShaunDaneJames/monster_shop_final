@@ -34,12 +34,19 @@ class Merchant < ApplicationRecord
     order_items.where(order_id: order_id)
   end
 
-  def discount_threshold
-    discounts.pluck(:quantity).first
-    #sort by?
+  def find_discount(quantity)
+    discounts.where("quantity <= #{quantity}")
   end
 
-  def apply_discount
-    # require "pry"; binding.pry
+  def highest_discount(quantity)
+    find_discount(quantity).order("percentage DESC").first.quantity
+  end
+
+  def associated_percentage(quantity)
+    find_discount(quantity).order("percentage DESC").first.percentage
+  end
+
+  def apply_discount(price, percentage)
+    price - (price * (percentage / 100))
   end
 end
