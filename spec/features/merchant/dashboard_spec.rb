@@ -91,11 +91,9 @@ RSpec.describe 'Merchant Dashboard' do
       within "#discount-#{@discount_1.id}" do
         click_link("Delete Discount")
       end
-
+      @m_user.reload
       visit "/merchant"
       expect(page).to_not have_css("#discount-#{@discount_1.id}")
-      expect(page).to_not have_content("#{@discount_1.percentage}")
-      expect(page).to_not have_content("#{@discount_1.quantity}")
     end
 
     it "Discounts can be updated" do
